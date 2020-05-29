@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+    mongo:
+        container_name: scl-co-eval-db
+        image: mongo:latest
+        environment:
+#           TODO: CB 29May2020: Use env vars instead. Hardcoded values are used for simplicity.
+            MONGO_INITDB_ROOT_USERNAME: test
+            MONGO_INITDB_ROOT_PASSWORD: test
+        volumes:
+#           - ./mongod.conf:/etc/mongod.conf
+            - scl-co-eval-mongo:/var/lib/mongodb
+#       entrypoint: ["mongod","--config","/etc/mongod.conf"]
+        ports:
+            - '27017:27017'
+volumes:
+    scl-co-eval-mongo:
