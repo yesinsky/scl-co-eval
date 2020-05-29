@@ -1,0 +1,11 @@
+//TODO CB 29May2020: Dummy for styles. Implement appropriate structure.
+
+.main {
+    display: flex;
+    flex-direction: column;
+
+    &__message {
+        text-align: center;
+        color: violet;
+    }
+}
