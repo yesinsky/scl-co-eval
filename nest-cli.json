@@ -1,5 +1,4 @@
 {
     "language": "ts",
-    "collection": "@nestjs/schematics",
-    "sourceRoot": "apps/ng-ddd-hackernews-be/src/app"
+    "collection": "@nestjs/schematics"
 }

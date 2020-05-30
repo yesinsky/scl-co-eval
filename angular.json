@@ -1,196 +1,228 @@
 {
-  "version": 1,
-  "projects": {
-    "scl-co-eval": {
-      "projectType": "application",
-      "schematics": {
-        "@nrwl/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "apps/scl-co-eval",
-      "sourceRoot": "apps/scl-co-eval/src",
-      "prefix": "scl-co-eval",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/apps/scl-co-eval",
-            "index": "apps/scl-co-eval/src/index.html",
-            "main": "apps/scl-co-eval/src/main.ts",
-            "polyfills": "apps/scl-co-eval/src/polyfills.ts",
-            "tsConfig": "apps/scl-co-eval/tsconfig.app.json",
-            "aot": true,
-            "assets": [
-              "apps/scl-co-eval/src/favicon.ico",
-              "apps/scl-co-eval/src/assets"
-            ],
-            "styles": ["apps/scl-co-eval/src/styles.scss"],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "apps/scl-co-eval/src/environments/environment.ts",
-                  "with": "apps/scl-co-eval/src/environments/environment.prod.ts"
+    "version": 1,
+    "projects": {
+        "scl-co-eval": {
+            "projectType": "application",
+            "schematics": {
+                "@nrwl/angular:component": {
+                    "style": "scss"
                 }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+            },
+            "root": "apps/scl-co-eval",
+            "sourceRoot": "apps/scl-co-eval/src",
+            "prefix": "scl-co-eval",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/apps/scl-co-eval",
+                        "index": "apps/scl-co-eval/src/index.html",
+                        "main": "apps/scl-co-eval/src/main.ts",
+                        "polyfills": "apps/scl-co-eval/src/polyfills.ts",
+                        "tsConfig": "apps/scl-co-eval/tsconfig.app.json",
+                        "aot": true,
+                        "assets": [
+                            "apps/scl-co-eval/src/favicon.ico",
+                            "apps/scl-co-eval/src/assets"
+                        ],
+                        "styles": ["apps/scl-co-eval/src/styles.scss"],
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "apps/scl-co-eval/src/environments/environment.ts",
+                                    "with": "apps/scl-co-eval/src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        }
+                    }
                 },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "scl-co-eval:build",
+                        "proxyConfig": "apps/scl-co-eval/proxy.conf.json"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "scl-co-eval:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "scl-co-eval:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "apps/scl-co-eval/tsconfig.app.json",
+                            "apps/scl-co-eval/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!apps/scl-co-eval/**"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "apps/scl-co-eval/jest.config.js",
+                        "tsConfig": "apps/scl-co-eval/tsconfig.spec.json",
+                        "passWithNoTests": true,
+                        "setupFile": "apps/scl-co-eval/src/test-setup.ts"
+                    }
                 }
-              ]
             }
-          }
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "scl-co-eval:build",
-            "proxyConfig": "apps/scl-co-eval/proxy.conf.json"
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "scl-co-eval:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "scl-co-eval:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/scl-co-eval/tsconfig.app.json",
-              "apps/scl-co-eval/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/scl-co-eval/**"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/scl-co-eval/jest.config.js",
-            "tsConfig": "apps/scl-co-eval/tsconfig.spec.json",
-            "passWithNoTests": true,
-            "setupFile": "apps/scl-co-eval/src/test-setup.ts"
-          }
-        }
-      }
-    },
-    "scl-co-eval-api": {
-      "root": "apps/scl-co-eval-api",
-      "sourceRoot": "apps/scl-co-eval-api/src",
-      "projectType": "application",
-      "prefix": "api",
-      "schematics": {},
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "options": {
-            "outputPath": "dist/apps/scl-co-eval-api",
-            "main": "apps/scl-co-eval-api/src/main.ts",
-            "tsConfig": "apps/scl-co-eval-api/tsconfig.app.json",
-            "assets": ["apps/scl-co-eval-api/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/scl-co-eval-api/src/environments/environment.ts",
-                  "with": "apps/scl-co-eval-api/src/environments/environment.prod.ts"
+        "scl-co-eval-api": {
+            "root": "apps/scl-co-eval-api",
+            "sourceRoot": "apps/scl-co-eval-api/src",
+            "projectType": "application",
+            "prefix": "api",
+            "schematics": {},
+            "architect": {
+                "build": {
+                    "builder": "@nrwl/node:build",
+                    "options": {
+                        "outputPath": "dist/apps/scl-co-eval-api",
+                        "main": "apps/scl-co-eval-api/src/main.ts",
+                        "tsConfig": "apps/scl-co-eval-api/tsconfig.app.json",
+                        "assets": ["apps/scl-co-eval-api/src/assets"]
+                    },
+                    "configurations": {
+                        "production": {
+                            "optimization": true,
+                            "extractLicenses": true,
+                            "inspect": false,
+                            "fileReplacements": [
+                                {
+                                    "replace": "apps/scl-co-eval-api/src/environments/environment.ts",
+                                    "with": "apps/scl-co-eval-api/src/environments/environment.prod.ts"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@nrwl/node:execute",
+                    "options": {
+                        "buildTarget": "scl-co-eval-api:build"
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "apps/scl-co-eval-api/tsconfig.app.json",
+                            "apps/scl-co-eval-api/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!apps/scl-co-eval-api/**"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "apps/scl-co-eval-api/jest.config.js",
+                        "tsConfig": "apps/scl-co-eval-api/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
                 }
-              ]
             }
-          }
         },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "scl-co-eval-api:build"
-          }
+        "common": {
+            "root": "libs/common",
+            "sourceRoot": "libs/common/src",
+            "projectType": "library",
+            "schematics": {},
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs/common/tsconfig.lib.json",
+                            "libs/common/tsconfig.spec.json"
+                        ],
+                        "exclude": ["**/node_modules/**", "!libs/common/**"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs/common/jest.config.js",
+                        "tsConfig": "libs/common/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "apps/scl-co-eval-api/tsconfig.app.json",
-              "apps/scl-co-eval-api/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!apps/scl-co-eval-api/**"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "apps/scl-co-eval-api/jest.config.js",
-            "tsConfig": "apps/scl-co-eval-api/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
+        "user": {
+            "root": "libs/user",
+            "sourceRoot": "libs/user/src",
+            "projectType": "library",
+            "schematics": {},
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs/user/tsconfig.lib.json",
+                            "libs/user/tsconfig.spec.json"
+                        ],
+                        "exclude": ["**/node_modules/**", "!libs/user/**"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs/user/jest.config.js",
+                        "tsConfig": "libs/user/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
-      }
     },
-    "common": {
-      "root": "libs/common",
-      "sourceRoot": "libs/common/src",
-      "projectType": "library",
-      "schematics": {},
-      "architect": {
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "libs/common/tsconfig.lib.json",
-              "libs/common/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**", "!libs/common/**"]
-          }
+    "cli": {
+        "defaultCollection": "@nrwl/angular"
+    },
+    "schematics": {
+        "@nrwl/angular:application": {
+            "unitTestRunner": "jest",
+            "e2eTestRunner": "cypress"
         },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "libs/common/jest.config.js",
-            "tsConfig": "libs/common/tsconfig.spec.json",
-            "passWithNoTests": true
-          }
+        "@nrwl/angular:library": {
+            "unitTestRunner": "jest"
         }
-      }
-    }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/angular"
-  },
-  "schematics": {
-    "@nrwl/angular:application": {
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
     },
-    "@nrwl/angular:library": {
-      "unitTestRunner": "jest"
-    }
-  },
-  "defaultProject": "scl-co-eval"
+    "defaultProject": "scl-co-eval"
 }
