@@ -1,2 +1,1 @@
-export * from './lib/common';
-//export * from './lib/...';
+export * from './lib/infrastructure/config/config.module';
