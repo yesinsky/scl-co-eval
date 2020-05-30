@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 
 export type AppConf = DbConfiguration & AuthConfiguration;
 
@@ -31,7 +31,8 @@ interface IConfigService {
     readonly jwtExpiresIn: number;
 }
 
-@Injectable()
+//CB 29May2020: Scope.DEFAULT === ex Scope.SINGLETON
+@Injectable({ scope: Scope.DEFAULT })
 export class ConfigService implements IConfigService {
 
     //TODO CB 29May2020: YAGNI - Implement getting config from .env files with dotenv.
