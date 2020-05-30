@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from '@scl-co-eval/common';
+import { ConfigService } from 'libs/common/src/lib/infrastructure/config/config.service';
 
 @Injectable()
 export class AppService {
-  getData(): Message {
-    return { message: 'empty workspace' };
-  }
+    getData(): {
+        message: string;
+    } {
+        return { message: 'empty workspace' };
+    }
 }
