@@ -24,6 +24,7 @@ import {
 } from '../entities/dto/user-update.dto';
 import { UserDataMapper } from '../entities/dto/user.dto';
 import { UserEntity } from '../entities/user.entity';
+import { Logger } from '@nestjs/common';
 
 export interface IUserService {
     create(source: CreateUserRequest): Promise<CreateUserResponse>;
@@ -31,6 +32,7 @@ export interface IUserService {
     findByEmail(sourceEmail: string): Promise<UserEntity>;
     update(source: UpdateUserRequest): Promise<UpdateUserResponse>;
     delete(source: DeleteUserRequest): Promise<DeleteUserResponse>;
+    clear(): Promise<void>;
 }
 
 @Injectable()
@@ -44,11 +46,45 @@ export class UserService implements IUserService {
         private readonly _userDataMapper: UserDataMapper
     ) {}
 
-    findById(sourceId: string): Promise<UserEntity> {
-        throw new Error('Method not implemented.');
+    async clear(): Promise<void> {
+        try {
+            const count = await this._userRepository.count();
+            if (count > 0) {
+                return await this._userRepository.clear();
+            }
+        } catch (e) {
+            Logger.error(e);
+            throw e;
+        }
     }
-    findByEmail(sourceEmail: string): Promise<UserEntity> {
-        throw new Error('Method not implemented.');
+
+    async findById(sourceId: string): Promise<UserEntity> {
+        let user: UserEntity;
+        try {
+            const user = await this._userRepository.findOne({
+                where: {
+                    id: sourceId,
+                },
+            });
+        } catch (e) {
+            Logger.error(e);
+            throw e;
+        }
+        return user;
+    }
+    async findByEmail(sourceEmail: string): Promise<UserEntity> {
+        let user: UserEntity;
+        try {
+            const user = await this._userRepository.findOne({
+                where: {
+                    email: sourceEmail,
+                },
+            });
+        } catch (e) {
+            Logger.error(e);
+            throw e;
+        }
+        return user;
     }
     update(source: UpdateUserRequest): Promise<UpdateUserResponse> {
         throw new Error('Method not implemented.');
@@ -57,39 +93,47 @@ export class UserService implements IUserService {
         throw new Error('Method not implemented.');
     }
 
-    async create(dto: CreateUserRequest): Promise<CreateUserResponse> {
-        const { name, email, rawPassword } = dto;
-        const existing = await getRepository(UserEntity).find({
-            where: { email: email },
-        });
+    async create(source: CreateUserRequest): Promise<CreateUserResponse> {
+        let result: CreateUserResponse = null;
+        try {
+            const { name, email, rawPassword } = source;
+            const existing = await getRepository(UserEntity).find({
+                where: { email: email },
+            });
 
-        const doesExist = !!existing && existing.length > 0;
+            const doesExist = !!existing && existing.length > 0;
 
-        if (doesExist) {
-            throw new HttpException(
-                { status: UserCreationStatus.AlreadyExist },
-                HttpStatus.BAD_REQUEST
+            if (doesExist) {
+                throw new HttpException(
+                    { status: UserCreationStatus.AlreadyExist },
+                    HttpStatus.BAD_REQUEST
+                );
+            }
+
+            let newUser = new UserEntity();
+            newUser.name = name;
+            newUser.email = email;
+            newUser.password = await this._authService.encryptPassword(
+                rawPassword
             );
-        }
 
-        let newUser = new UserEntity();
-        newUser.name = name;
-        newUser.email = email;
-        newUser.password = await this._authService.encryptPassword(rawPassword);
-
-        const errors = await validate(newUser);
-        if (errors.length > 0) {
-            throw new HttpException(
-                { error: UserCreationStatus.ValidationError },
-                HttpStatus.BAD_REQUEST
-            );
-        } else {
-            const savedUser = await this._userRepository.save(newUser);
-            const result: CreateUserResponse = {
-                status: UserCreationStatus.Created,
-                user: this._userDataMapper.toDto(savedUser),
-            };
-            return result;
+            const errors = await validate(newUser);
+            if (errors.length > 0) {
+                throw new HttpException(
+                    { error: UserCreationStatus.ValidationError },
+                    HttpStatus.BAD_REQUEST
+                );
+            } else {
+                const savedUser = await this._userRepository.save(newUser);
+                result = {
+                    status: UserCreationStatus.Created,
+                    user: this._userDataMapper.toDto(savedUser),
+                };
+            }
+        } catch (e) {
+            Logger.error(e);
+            throw e;
         }
+        return result;
     }
 }
