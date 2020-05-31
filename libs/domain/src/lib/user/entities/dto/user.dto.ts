@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../user.entity';
 import { DataMapper } from '../../../shared/interfaces';
-import { ObjectID } from 'typeorm';
 import { IsNotEmpty, IsEmail } from 'class-validator';
+import { ObjectID as MongoObjectID } from 'mongodb';
 
 export class UserDto {
     @IsNotEmpty()
@@ -17,7 +17,7 @@ export class UserDto {
 export class UserDataMapper implements DataMapper<UserEntity, UserDto> {
     fromDto(dto: UserDto): UserEntity {
         const entity = new UserEntity();
-        entity.id = new ObjectID(dto.id);
+        entity.id = new MongoObjectID(dto.id);
         entity.name = dto.name;
         entity.email = dto.email;
 
