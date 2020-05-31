@@ -1,15 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService, AuthService } from '../../shared/interfaces';
-import { AuthModule } from '../../auth/auth.module';
-import { UserModule } from '../user.module';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { UserEntity } from '../entities/user.entity';
-import { ConfigModule } from '../../../../../common/src/lib/infrastructure/config/config.module';
-import { ConfigService } from '../../../../../common/src/lib/infrastructure/config/config.service';
+import { getManager } from 'typeorm';
+import { ConfigModule } from '@scl-co-eval/common';
+import { ConfigService } from '@scl-co-eval/common';
+import { AuthModule } from '../../auth/auth.module';
 import {
     CreateUserRequest,
     UserCreationStatus,
 } from '../entities/dto/user-create.dto';
+import { UserEntity } from '../entities/user.entity';
+import { UserModule } from '../user.module';
+import { UserService } from './user.service';
 
 jest.setTimeout(3 * 60 * 1000);
 
@@ -23,25 +24,14 @@ describe('UserService', () => {
                 TypeOrmModule.forRootAsync({
                     imports: [ConfigModule],
                     useFactory: (config: ConfigService) => {
-                        const typeOrmOpts: TypeOrmModuleOptions = {
-                            type: 'mongodb',
-                            host: config.dbHost,
-                            port: config.dbPort,
-                            database: config.dbName,
-                            username: config.dbUser,
-                            password: config.dbPassword,
-                            authSource: config.dbAuthSource,
-                            autoLoadEntities: true,
-                        };
+                        const typeOrmOpts: TypeOrmModuleOptions = config.getDefaultOrmConfiguration();
                         return typeOrmOpts;
                     },
                     inject: [ConfigService],
                 }),
-                TypeOrmModule.forFeature([UserEntity]),
                 AuthModule,
-                UserModule,
-            ],
-            providers: [UserService, <any>AuthService],
+                UserModule
+            ]
         }).compile();
 
         service = module.get<UserService>(UserService);
@@ -78,20 +68,71 @@ describe('UserService', () => {
             rawPassword: '12345',
         });
 
-        const invalidName =  await service.create({
+        const invalidName = await service.create({
             email: 'norma;@test.com',
             name: '',
             rawPassword: '12345',
         });
 
-        const invalidPwd =  await service.create({
+        const invalidPwd = await service.create({
             email: 'norma;@test.com',
             name: 'name',
             rawPassword: '',
         });
 
-        expect(invalidEmail.status === UserCreationStatus.SourceValidationError).toBeTruthy();
-        expect(invalidName.status === UserCreationStatus.SourceValidationError).toBeTruthy();
-        expect(invalidPwd.status === UserCreationStatus.SourceValidationError).toBeTruthy();
+        expect(
+            invalidEmail.status === UserCreationStatus.SourceValidationError
+        ).toBeTruthy();
+        expect(
+            invalidName.status === UserCreationStatus.SourceValidationError
+        ).toBeTruthy();
+        expect(
+            invalidPwd.status === UserCreationStatus.SourceValidationError
+        ).toBeTruthy();
+    });
+
+    it('should find user by ObjectID', async () => {
+        const testUser = new UserEntity();
+        testUser.email = 'test@test.test';
+        testUser.name = 'testname';
+        testUser.password = '12345';
+
+        let userRepo = getManager('default').getRepository(UserEntity);
+        const created = await userRepo.save(testUser);
+
+        const res = await service.findById(created.id);
+
+        expect(res).toBeDefined();
+        expect(res.email == testUser.email).toBeTruthy();
+    });
+
+    it('should find user by string id', async () => {
+        const testUser = new UserEntity();
+        testUser.email = 'test@test.test';
+        testUser.name = 'testname';
+        testUser.password = '12345';
+
+        let userRepo = getManager('default').getRepository(UserEntity);
+        const created = await userRepo.save(testUser);
+
+        const res = await service.findById(created.id.toString());
+
+        expect(res).toBeDefined();
+        expect(res.email == testUser.email).toBeTruthy();
+    });
+
+    it('should find user by email', async () => {
+        const testUser = new UserEntity();
+        testUser.email = 'test@test.test';
+        testUser.name = 'testname';
+        testUser.password = '12345';
+
+        let userRepo = getManager('default').getRepository(UserEntity);
+        const created = await userRepo.save(testUser);
+
+        const res = await service.findByEmail(created.email);
+
+        expect(res).toBeDefined();
+        expect(res.email == testUser.email).toBeTruthy();
     });
 });
