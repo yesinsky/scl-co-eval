@@ -1,40 +1,16 @@
 import { Injectable, Scope } from '@nestjs/common';
-
-export type AppConf = DbConfiguration & AuthConfiguration;
-
-interface DbConfiguration {
-    dbName: string;
-    dbHost: string;
-    dbPort: number;
-
-    dbUser: string;
-    dbPassword: string;
-
-    dbAuthSource: string;
-}
-
-interface AuthConfiguration {
-    jwtSecret: string;
-    jwtExpiresIn: number;
-}
-
-interface IConfigService {
-    readonly dbName: string;
-    readonly dbHost: string;
-    readonly dbPort: number;
-
-    readonly dbUser: string;
-    readonly dbPassword: string;
-    readonly dbAuthSource: string;
-
-    readonly jwtSecret: string;
-    readonly jwtExpiresIn: number;
-}
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { JwtModuleOptions } from '@nestjs/jwt';
+import {
+    IConfigService,
+    AppConf,
+    DbConfiguration,
+    AuthConfiguration,
+} from './config.meta';
 
 //CB 29May2020: Scope.DEFAULT === ex Scope.SINGLETON
 @Injectable({ scope: Scope.DEFAULT })
-export class ConfigService implements IConfigService {
-
+export class ConfigService implements IConfigService<TypeOrmModuleOptions, JwtModuleOptions> {
     //TODO CB 29May2020: YAGNI - Implement getting config from .env files with dotenv.
     public static TestMode = false;
 
@@ -42,6 +18,28 @@ export class ConfigService implements IConfigService {
         this._envConfig = this._generateDefaultConfiguration(
             ConfigService.TestMode
         );
+    }
+
+    getDefaultOrmConfiguration(): TypeOrmModuleOptions {
+        const config: TypeOrmModuleOptions = {
+            name: 'default',
+            type: 'mongodb',
+            host: this.dbHost,
+            port: this.dbPort,
+            database: this.dbName,
+            username: this.dbUser,
+            password: this.dbPassword,
+            authSource: this.dbAuthSource,
+            autoLoadEntities: true,
+        };
+        return config;
+    }
+
+    getDefaultJwtConfiguration(): JwtModuleOptions{
+        const config : JwtModuleOptions = {
+            secret: this.jwtSecret,
+        };
+        return config;
     }
 
     get dbName(): string {
