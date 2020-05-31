@@ -17,7 +17,7 @@
         "baseUrl": ".",
         "paths": {
             "@scl-co-eval/common": ["libs/common/src/index.ts"],
-            "@scl-co-eval/user": ["libs/user/src/index.ts"]
+            "@scl-co-eval/domain": ["libs/domain/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]
