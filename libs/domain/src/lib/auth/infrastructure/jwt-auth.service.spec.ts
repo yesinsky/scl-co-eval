@@ -1,19 +1,19 @@
-import { JwtAuthService } from "./jwt-auth.service";
-import { TestingModule, Test } from '@nestjs/testing';
-import { ConfigModule } from '../../../../common/src/lib/infrastructure/config/config.module';
+import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { ConfigService } from '../../../../common/src/lib/infrastructure/config/config.service';
-import { UserEntity } from '../user/entities/user.entity';
-import { AuthModule } from './auth.module';
-import { UserModule } from '../user/user.module';
-import { UserService } from '../shared/interfaces';
-import { AuthService } from './auth.service';
-import { AccessRequest, SignUpRequest, AccessResponse, AccessStatus } from './entities/access.dto';
-import { onErrorResumeNext } from 'rxjs';
-
+import { ConfigModule } from '../../../../../common/src/lib/infrastructure/config/config.module';
+import { ConfigService } from '../../../../../common/src/lib/infrastructure/config/config.service';
+import { UserService } from '../../user/infrastructure/user.service';
+import { UserModule } from '../../user/user.module';
+import { AuthModule } from '../auth.module';
+import {
+    AccessRequest,
+    AccessResponse,
+    AccessStatus,
+    SignUpRequest,
+} from '../entities/access.dto';
+import { JwtAuthService } from './jwt-auth.service';
 
 jest.setTimeout(3 * 60 * 1000);
-//ConfigService.TestMode = true;
 
 describe('JwtAuthService', () => {
     let authService: JwtAuthService;
@@ -26,25 +26,14 @@ describe('JwtAuthService', () => {
                 TypeOrmModule.forRootAsync({
                     imports: [ConfigModule],
                     useFactory: (config: ConfigService) => {
-                        const typeOrmOpts: TypeOrmModuleOptions = {
-                            type: 'mongodb',
-                            host: config.dbHost,
-                            port: config.dbPort,
-                            database: config.dbName,
-                            username: config.dbUser,
-                            password: config.dbPassword,
-                            authSource: config.dbAuthSource,
-                            autoLoadEntities: true,
-                        };
+                        const typeOrmOpts: TypeOrmModuleOptions = config.getDefaultOrmConfiguration();
                         return typeOrmOpts;
                     },
                     inject: [ConfigService],
                 }),
-                TypeOrmModule.forFeature([UserEntity]),
                 AuthModule,
                 UserModule,
             ],
-            providers: [UserService, <any>AuthService],
         }).compile();
 
         authService = module.get<JwtAuthService>(JwtAuthService);
@@ -61,13 +50,15 @@ describe('JwtAuthService', () => {
     });
 
     it('should create user on SignUp with valid source data', async () => {
-        const email =  'test@test.test';
+        const email = 'test@test.test';
         const name = 'test_user';
         const password = 'qwerty';
 
-        const signupData:  SignUpRequest = {
-            email, name, password
-        }
+        const signupData: SignUpRequest = {
+            email,
+            name,
+            password,
+        };
 
         const typedRes: AccessResponse = await authService.signUp(signupData);
         expect(typedRes).toBeDefined();
@@ -79,17 +70,20 @@ describe('JwtAuthService', () => {
     });
 
     it('should return UserNotFoundOrWrongPassword on invalid login', async () => {
-        const email =  'test@test.test';
+        const email = 'test@test.test';
         const password = 'qwerty';
 
-        const signupData:  AccessRequest = {
-            email, password
-        }
+        const signupData: AccessRequest = {
+            email,
+            password,
+        };
 
         const typedRes: AccessResponse = await authService.login(signupData);
         expect(typedRes).toBeDefined();
         expect(typedRes.status).toBeDefined();
-        expect(typedRes.status === AccessStatus.UserNotFoundOrWrongPassword).toBeTruthy();
+        expect(
+            typedRes.status === AccessStatus.UserNotFoundOrWrongPassword
+        ).toBeTruthy();
         expect(typedRes.user).not.toBeDefined();
-    })
+    });
 });

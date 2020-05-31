@@ -1,11 +1,6 @@
-import { UserEntity } from '../user/entities/user.entity';
-import {
-    AccessRequest,
-    AccessResponse,
-    AccessStatus,
-} from './entities/access.dto';
 import * as argon2 from 'argon2';
-import { SignUpRequest } from './entities/access.dto';
+import { UserEntity } from '../../user/entities/user.entity';
+import { AccessRequest, AccessResponse, SignUpRequest } from '../entities/access.dto';
 
 export interface IAuthService {
     login(loginRequest: AccessRequest): Promise<AccessResponse>;

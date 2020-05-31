@@ -14,10 +14,10 @@ export type AccessResponse = {
 }
 
 export enum AccessStatus {
-    'UserNotFoundOrWrongPassword' = 0,
-    'Authenticated' = 1,
-    'AlreadyExistOnSignup' = 2,
-    'ServerError' = 3,
-    'Unsupported' = 4,
-    'InvalidSourceData' = 5
+    UserNotFoundOrWrongPassword = 'UserNotFoundOrWrongPassword',
+    Authenticated = 'Authenticated',
+    AlreadyExistOnSignup = 'AlreadyExistOnSignup',
+    ServerError = 'ServerError',
+    Unsupported = 'Unsupported',
+    InvalidSourceData = 'InvalidSourceData'
 }
