@@ -15,5 +15,6 @@ export enum UserCreationStatus {
     Created = 'Created',
     AlreadyExist = 'AlreadyExist',
     SourceValidationError = 'SourceValidationError',
-    DatabaseValidationError = 'DatabaseValidationError'
+    DatabaseValidationError = 'DatabaseValidationError',
+    ServerError = 'ServerError'
 }

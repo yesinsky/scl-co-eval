@@ -1,12 +1,12 @@
 import {
     forwardRef,
-    HttpException,
-    HttpStatus,
     Inject,
     Injectable,
+    Logger,
+    InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { validate, isEmail, isNotEmpty } from 'class-validator';
+import { isEmail, isNotEmpty, validate } from 'class-validator';
 import { getRepository, Repository } from 'typeorm';
 import { AuthService } from '../../shared/interfaces';
 import {
@@ -24,7 +24,6 @@ import {
 } from '../entities/dto/user-update.dto';
 import { UserDataMapper } from '../entities/dto/user.dto';
 import { UserEntity } from '../entities/user.entity';
-import { Logger } from '@nestjs/common';
 
 export interface IUserService {
     create(source: CreateUserRequest): Promise<CreateUserResponse>;
@@ -43,7 +42,8 @@ export class UserService implements IUserService {
         @Inject(forwardRef(() => AuthService))
         private readonly _authService: AuthService,
         @Inject(UserDataMapper)
-        private readonly _userDataMapper: UserDataMapper
+        private readonly _userDataMapper: UserDataMapper,
+        private readonly _logger = new Logger(UserService.name)
     ) {}
 
     async clear(): Promise<void> {
@@ -52,37 +52,43 @@ export class UserService implements IUserService {
             if (count > 0) {
                 return await this._userRepository.clear();
             }
-        } catch (e) {
-            Logger.error(e);
-            throw e;
+        } catch (err) {
+            this._logger.error(err);
+            throw new InternalServerErrorException(
+                err.message || { status: UserCreationStatus.ServerError }
+            );
         }
     }
 
     async findById(sourceId: string): Promise<UserEntity> {
         let user: UserEntity;
         try {
-            const user = await this._userRepository.findOne({
+            user = await this._userRepository.findOne({
                 where: {
                     id: sourceId,
                 },
             });
-        } catch (e) {
-            Logger.error(e);
-            throw e;
+        } catch (err) {
+            this._logger.error(err);
+            throw new InternalServerErrorException(
+                err.message || { status: UserCreationStatus.ServerError }
+            );
         }
         return user;
     }
     async findByEmail(sourceEmail: string): Promise<UserEntity> {
         let user: UserEntity;
         try {
-            const user = await this._userRepository.findOne({
+            user = await this._userRepository.findOne({
                 where: {
                     email: sourceEmail,
                 },
             });
-        } catch (e) {
-            Logger.error(e);
-            throw e;
+        } catch (err) {
+            this._logger.error(err);
+            throw new InternalServerErrorException(
+                err.message || { status: UserCreationStatus.ServerError }
+            );
         }
         return user;
     }
