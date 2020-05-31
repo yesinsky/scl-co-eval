@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isEmail, isNotEmpty, validate } from 'class-validator';
-import { getRepository, Repository } from 'typeorm';
-import { AuthService } from '../../shared/interfaces';
+import { getRepository, Repository, ObjectID } from 'typeorm';
+import { ObjectID as MongoObjectID } from 'mongodb';
 import {
     CreateUserRequest,
     CreateUserResponse,
@@ -24,10 +24,12 @@ import {
 } from '../entities/dto/user-update.dto';
 import { UserDataMapper } from '../entities/dto/user.dto';
 import { UserEntity } from '../entities/user.entity';
+import { AuthService } from '../../auth/infrastructure/auth.service';
+import { isString } from '../../shared/utils';
 
 export interface IUserService {
     create(source: CreateUserRequest): Promise<CreateUserResponse>;
-    findById(sourceId: string): Promise<UserEntity>;
+    findById(sourceId: ObjectID | string): Promise<UserEntity>;
     findByEmail(sourceEmail: string): Promise<UserEntity>;
     update(source: UpdateUserRequest): Promise<UpdateUserResponse>;
     delete(source: DeleteUserRequest): Promise<DeleteUserResponse>;
@@ -61,12 +63,17 @@ export class UserService implements IUserService {
         }
     }
 
-    async findById(sourceId: string): Promise<UserEntity> {
+    //BUG: CB29May2020: TypeOrm and Mongo have bug in searching by id.
+    //BUG: CB29May2020: Github issue: https://github.com/typeorm/typeorm/issues/3964
+    async findById(sourceId: ObjectID | string): Promise<UserEntity> {
         let user: UserEntity;
         try {
             user = await this._userRepository.findOne({
                 where: {
-                    id: sourceId,
+                    //BUG: CB29May2020: Wolkaround solution.
+                    _id: isString(sourceId)
+                        ? new MongoObjectID(sourceId)
+                        : sourceId,
                 },
             });
         } catch (err) {
