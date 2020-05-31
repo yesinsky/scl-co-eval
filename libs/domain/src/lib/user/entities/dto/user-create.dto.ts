@@ -8,11 +8,12 @@ export interface CreateUserRequest {
 
 export interface CreateUserResponse {
     status: UserCreationStatus;
-    user: UserDto;
+    user?: UserDto;
 }
 
 export enum UserCreationStatus {
-    'Created' = 0,
-    'AlreadyExist' = 1,
-    'ValidationError' = 2
+    Created = 'Created',
+    AlreadyExist = 'AlreadyExist',
+    SourceValidationError = 'SourceValidationError',
+    DatabaseValidationError = 'DatabaseValidationError'
 }

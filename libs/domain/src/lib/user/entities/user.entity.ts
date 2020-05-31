@@ -15,9 +15,4 @@ export class UserEntity {
 
     @Column()
     password: string;
-
-    /*@BeforeInsert()
-    async hashPassword() {
-      this.password = await argon2.hash(this.password);
-    }*/
 }

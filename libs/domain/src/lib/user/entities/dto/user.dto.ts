@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { UserEntity } from '../user.entity';
 import { DataMapper } from '../../../shared/interfaces';
 import { ObjectID } from 'typeorm';
+import { IsNotEmpty, IsEmail } from 'class-validator';
 
-export interface UserDto {
+export class UserDto {
+    @IsNotEmpty()
     id: string;
+    @IsNotEmpty()
     name?: string;
+    @IsEmail()
     email?: string;
 }
 

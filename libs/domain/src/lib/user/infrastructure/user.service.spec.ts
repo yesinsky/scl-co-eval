@@ -70,4 +70,28 @@ describe('UserService', () => {
         expect(res.user.email === req.email).toBeTruthy();
         expect(res.user.name === req.name).toBeTruthy();
     });
+
+    it('should fail on Create method call with invalid data', async () => {
+        const invalidEmail = await service.create({
+            email: '56v3bey5',
+            name: 'testname',
+            rawPassword: '12345',
+        });
+
+        const invalidName =  await service.create({
+            email: 'norma;@test.com',
+            name: '',
+            rawPassword: '12345',
+        });
+
+        const invalidPwd =  await service.create({
+            email: 'norma;@test.com',
+            name: 'name',
+            rawPassword: '',
+        });
+
+        expect(invalidEmail.status === UserCreationStatus.SourceValidationError).toBeTruthy();
+        expect(invalidName.status === UserCreationStatus.SourceValidationError).toBeTruthy();
+        expect(invalidPwd.status === UserCreationStatus.SourceValidationError).toBeTruthy();
+    });
 });

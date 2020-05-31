@@ -9,6 +9,6 @@ export interface UpdateUserResponse {
 }
 
 export enum UserUpdateStatus {
-    'Updated' = 0,
-    'NotExist' = 1,
+    Updated = 'Updated',
+    NotExist = 'NotExist',
 }

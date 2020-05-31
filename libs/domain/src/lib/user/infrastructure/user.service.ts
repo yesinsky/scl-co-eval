@@ -6,7 +6,7 @@ import {
     Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { validate } from 'class-validator';
+import { validate, isEmail, isNotEmpty } from 'class-validator';
 import { getRepository, Repository } from 'typeorm';
 import { AuthService } from '../../shared/interfaces';
 import {
@@ -97,6 +97,12 @@ export class UserService implements IUserService {
         let result: CreateUserResponse = null;
         try {
             const { name, email, rawPassword } = source;
+
+            const isValidSource =
+                isEmail(email) && isNotEmpty(name) && isNotEmpty(rawPassword);
+            if (!isValidSource) {
+                return { status: UserCreationStatus.SourceValidationError };
+            }
             const existing = await getRepository(UserEntity).find({
                 where: { email: email },
             });
@@ -104,10 +110,7 @@ export class UserService implements IUserService {
             const doesExist = !!existing && existing.length > 0;
 
             if (doesExist) {
-                throw new HttpException(
-                    { status: UserCreationStatus.AlreadyExist },
-                    HttpStatus.BAD_REQUEST
-                );
+                return { status: UserCreationStatus.AlreadyExist };
             }
 
             let newUser = new UserEntity();
@@ -119,10 +122,7 @@ export class UserService implements IUserService {
 
             const errors = await validate(newUser);
             if (errors.length > 0) {
-                throw new HttpException(
-                    { error: UserCreationStatus.ValidationError },
-                    HttpStatus.BAD_REQUEST
-                );
+                return { status: UserCreationStatus.DatabaseValidationError };
             } else {
                 const savedUser = await this._userRepository.save(newUser);
                 result = {
