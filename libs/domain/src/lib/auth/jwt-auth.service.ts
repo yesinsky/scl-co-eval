@@ -26,14 +26,13 @@ export class JwtAuthService extends AuthService {
         @Inject(forwardRef(() => UserService))
         private readonly _userService: UserService,
         @Inject(UserDataMapper)
-        private readonly _userDataMapper: UserDataMapper,
-        private readonly _logger = new Logger(JwtAuthService.name)
+        private readonly _userDataMapper: UserDataMapper
     ) {
         super();
     }
-    async login(
-        loginRequest: AccessRequest
-    ): Promise<AccessStatus | AccessResponse> {
+    private readonly _logger = new Logger(JwtAuthService.name);
+
+    async login(loginRequest: AccessRequest): Promise<AccessResponse> {
         try {
             const { email, password } = loginRequest;
             const isValidSourceData = isEmail(email) && isNotEmpty(password);
@@ -67,9 +66,7 @@ export class JwtAuthService extends AuthService {
             );
         }
     }
-    async signUp(
-        signUpRequest: SignUpRequest
-    ): Promise<AccessStatus | AccessResponse> {
+    async signUp(signUpRequest: SignUpRequest): Promise<AccessResponse> {
         try {
             const { email, name, password } = signUpRequest;
 

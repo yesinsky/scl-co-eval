@@ -8,11 +8,11 @@ import * as argon2 from 'argon2';
 import { SignUpRequest } from './entities/access.dto';
 
 export interface IAuthService {
-    login(loginRequest: AccessRequest): Promise<AccessResponse | AccessStatus>;
+    login(loginRequest: AccessRequest): Promise<AccessResponse>;
 
     signUp(
         signUpRequest: SignUpRequest
-    ): Promise<AccessResponse | AccessStatus>;
+    ): Promise<AccessResponse>;
 
     encryptPassword(rawPassword: string): Promise<string>;
 
@@ -34,11 +34,11 @@ export abstract class AuthService implements IAuthService {
 
     abstract login(
         loginRequest: AccessRequest
-    ): Promise<AccessResponse | AccessStatus>;
+    ): Promise<AccessResponse>;
 
     abstract signUp(
         signUpRequest: SignUpRequest
-    ): Promise<AccessResponse | AccessStatus>;
+    ): Promise<AccessResponse>;
 
     abstract validatePayload(payload: any): Promise<UserEntity>;
 }

@@ -60,7 +60,7 @@ describe('JwtAuthService', () => {
         expect(authService).toBeDefined();
     });
 
-    it('should create user on login with valid source data', async () => {
+    it('should create user on SignUp with valid source data', async () => {
         const email =  'test@test.test';
         const name = 'test_user';
         const password = 'qwerty';
@@ -68,9 +68,8 @@ describe('JwtAuthService', () => {
         const signupData:  SignUpRequest = {
             email, name, password
         }
-        const res = await authService.signUp(signupData);
 
-        const typedRes = (res as AccessResponse);
+        const typedRes: AccessResponse = await authService.signUp(signupData);
         expect(typedRes).toBeDefined();
         expect(typedRes.status).toBeDefined();
         expect(typedRes.status === AccessStatus.Authenticated).toBeTruthy();
@@ -78,4 +77,19 @@ describe('JwtAuthService', () => {
         expect(typedRes.user.email === email).toBeTruthy();
         expect(typedRes.token).toBeDefined();
     });
+
+    it('should return UserNotFoundOrWrongPassword on invalid login', async () => {
+        const email =  'test@test.test';
+        const password = 'qwerty';
+
+        const signupData:  AccessRequest = {
+            email, password
+        }
+
+        const typedRes: AccessResponse = await authService.login(signupData);
+        expect(typedRes).toBeDefined();
+        expect(typedRes.status).toBeDefined();
+        expect(typedRes.status === AccessStatus.UserNotFoundOrWrongPassword).toBeTruthy();
+        expect(typedRes.user).not.toBeDefined();
+    })
 });

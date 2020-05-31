@@ -42,9 +42,10 @@ export class UserService implements IUserService {
         @Inject(forwardRef(() => AuthService))
         private readonly _authService: AuthService,
         @Inject(UserDataMapper)
-        private readonly _userDataMapper: UserDataMapper,
-        private readonly _logger = new Logger(UserService.name)
+        private readonly _userDataMapper: UserDataMapper
     ) {}
+
+    private readonly _logger = new Logger(UserService.name);
 
     async clear(): Promise<void> {
         try {
