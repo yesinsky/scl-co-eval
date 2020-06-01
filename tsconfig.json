@@ -17,7 +17,9 @@
         "baseUrl": ".",
         "paths": {
             "@scl-co-eval/common": ["libs/common/src/index.ts"],
-            "@scl-co-eval/domain": ["libs/domain/src/index.ts"]
+            "@scl-co-eval/domain": ["libs/domain/src/index.ts"],
+            "@scl-co-eval/feature-login": ["libs_fe/feature-login/src/index.ts"],
+            "@scl-co-eval/util": ["libs_fe/util/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

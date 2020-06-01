@@ -30,6 +30,12 @@
         },
         "domain": {
             "tags": []
+        },
+        "feature-login": {
+            "tags": []
+        },
+        "util": {
+            "tags": []
         }
     }
 }

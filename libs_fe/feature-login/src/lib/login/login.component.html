@@ -1,0 +1,41 @@
+<div class="login">
+    <form [formGroup]="loginForm">
+        <div class="login__inputs">
+            <input
+                class="login__input"
+                type="email"
+                placeholder="Email"
+                formControlName="email"
+            />
+            <input
+                class="login__input"
+                type="password"
+                placeholder="Password"
+                formControlName="password"
+            />
+        </div>
+
+        <div class="login__buttons">
+            <button
+                class="login__button"
+                (click)="onSignUp()"
+                [disabled]="!loginForm.valid"
+            >
+                Signup
+            </button>
+            <button
+                class="login__button"
+                (click)="onLogin()"
+                [disabled]="!loginForm.valid"
+            >
+                Login
+            </button>
+        </div>
+
+        <div class="login__validation">
+            <p *ngIf="this.loginForm.dirty && this.loginForm.invalid">
+                {{ 'Invalid login data' }}
+            </p>
+        </div>
+    </form>
+</div>

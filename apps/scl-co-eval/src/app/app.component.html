@@ -1,6 +1,11 @@
-<div class = "main">
-  <div class="main__message">
-    Message: {{ hello$ | async | json }}
-  </div>
+<div class="container">
+    <header class="header">
+        <div class="header__greetings">
+            <p>Forest selector</p>
+            <p>version: {{ hello$ | async | json }}</p>
+        </div>
+    </header>
+    <article class="main">
+        <router-outlet class="main__content"></router-outlet>
+    </article>
 </div>
-

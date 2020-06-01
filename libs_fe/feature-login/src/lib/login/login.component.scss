@@ -1,0 +1,68 @@
+@import '../shared/mixins';
+
+$grayColor: rgb(160, 160, 160);
+$lightGrayColor: rgb(220, 220, 220);
+$lightRedColor: hsl(10, 90, 80);
+
+.slowChange{
+  -webkit-transition: background-color 350ms linear;
+  -ms-transition: background-color 350ms linear;
+  transition: background-color 350ms linear;
+}
+
+.spaced {
+    & > * {
+        margin: 0.2rem;
+    }
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @extend .spaced;
+
+    &__inputs {
+        @extend .spaced;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__input {
+        @include placeholder {
+            color: $lightGrayColor;
+            text-align: center;
+        }
+
+        border: 0.005rem solid;
+        border-color: lighten($grayColor, 20);
+        text-align: center;
+    }
+
+    &__buttons {
+        @extend .spaced;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    &__button {
+        outline: none;
+        vertical-align: middle;
+
+        border-style: hidden;
+        border-color: $grayColor;
+
+        &:hover {
+            font-size: medium;
+            background: $lightGrayColor;
+            @extend .slowChange;
+        }
+    }
+
+    &__validation {
+        color: $lightRedColor;
+        text-align: center;
+    }
+}
