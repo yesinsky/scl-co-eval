@@ -35,8 +35,7 @@ $lightRedColor: hsl(10, 90, 80);
             text-align: center;
         }
 
-        border: 0.005rem solid;
-        border-color: lighten($grayColor, 20);
+        border: 0.005rem solid lighten($grayColor, 20);
         text-align: center;
     }
 
