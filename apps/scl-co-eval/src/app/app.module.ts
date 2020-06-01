@@ -4,12 +4,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginModule } from '../../../../libs_fe/feature-login/src/lib/login/login.module';
+import { FeatureLoginModule } from '@scl-co-eval/feature-login';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
-       LoginModule,
+       FeatureLoginModule,
        BrowserModule,
        HttpClientModule, 
        AppRoutingModule,
