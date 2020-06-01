@@ -5,9 +5,10 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FeatureLoginModule } from '@scl-co-eval/feature-login';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, DashboardComponent],
     imports: [
        FeatureLoginModule,
        BrowserModule,
