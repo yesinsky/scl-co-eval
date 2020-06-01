@@ -1,0 +1,10 @@
+{
+    "extends": "../../tslint.json",
+    "rules": {
+        "directive-selector": [true, "attribute", "sclCoEval", "camelCase"],
+        "component-selector": [true, "element", "scl-co-eval", "kebab-case"]
+    },
+    "linterOptions": {
+        "exclude": ["!**/*"]
+    }
+}

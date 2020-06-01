@@ -18,8 +18,13 @@
         "paths": {
             "@scl-co-eval/common": ["libs/common/src/index.ts"],
             "@scl-co-eval/domain": ["libs/domain/src/index.ts"],
-            "@scl-co-eval/feature-login": ["libs_fe/feature-login/src/index.ts"],
-            "@scl-co-eval/util": ["libs_fe/util/src/index.ts"]
+            "@scl-co-eval/feature-login": [
+                "libs_fe/feature-login/src/index.ts"
+            ],
+            "@scl-co-eval/util": ["libs_fe/util/src/index.ts"],
+            "@scl-co-eval/feature-one": ["libs_fe/feature-one/src/index.ts"],
+            "@scl-co-eval/feature-two": ["libs_fe/feature-two/src/index.ts"],
+            "@scl-co-eval/feature-three": ["libs_fe/feature-three/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

@@ -215,10 +215,10 @@
             }
         },
         "feature-login": {
+            "projectType": "library",
             "root": "libs_fe/feature-login",
             "sourceRoot": "libs_fe/feature-login/src",
-            "projectType": "library",
-            "schematics": {},
+            "prefix": "scl-co-eval",
             "architect": {
                 "lint": {
                     "builder": "@angular-devkit/build-angular:tslint",
@@ -238,8 +238,14 @@
                     "options": {
                         "jestConfig": "libs_fe/feature-login/jest.config.js",
                         "tsConfig": "libs_fe/feature-login/tsconfig.spec.json",
-                        "passWithNoTests": true
+                        "passWithNoTests": true,
+                        "setupFile": "libs_fe/feature-login/src/test-setup.ts"
                     }
+                }
+            },
+            "schematics": {
+                "@nrwl/angular:component": {
+                    "style": "scss"
                 }
             }
         },
@@ -266,6 +272,111 @@
                         "tsConfig": "libs_fe/util/tsconfig.spec.json",
                         "passWithNoTests": true
                     }
+                }
+            }
+        },
+        "feature-one": {
+            "projectType": "library",
+            "root": "libs_fe/feature-one",
+            "sourceRoot": "libs_fe/feature-one/src",
+            "prefix": "scl-co-eval",
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs_fe/feature-one/tsconfig.lib.json",
+                            "libs_fe/feature-one/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs_fe/feature-one/**"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs_fe/feature-one/jest.config.js",
+                        "tsConfig": "libs_fe/feature-one/tsconfig.spec.json",
+                        "passWithNoTests": true,
+                        "setupFile": "libs_fe/feature-one/src/test-setup.ts"
+                    }
+                }
+            },
+            "schematics": {
+                "@nrwl/angular:component": {
+                    "style": "scss"
+                }
+            }
+        },
+        "feature-two": {
+            "projectType": "library",
+            "root": "libs_fe/feature-two",
+            "sourceRoot": "libs_fe/feature-two/src",
+            "prefix": "scl-co-eval",
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs_fe/feature-two/tsconfig.lib.json",
+                            "libs_fe/feature-two/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs_fe/feature-two/**"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs_fe/feature-two/jest.config.js",
+                        "tsConfig": "libs_fe/feature-two/tsconfig.spec.json",
+                        "passWithNoTests": true,
+                        "setupFile": "libs_fe/feature-two/src/test-setup.ts"
+                    }
+                }
+            },
+            "schematics": {
+                "@nrwl/angular:component": {
+                    "style": "scss"
+                }
+            }
+        },
+        "feature-three": {
+            "projectType": "library",
+            "root": "libs_fe/feature-three",
+            "sourceRoot": "libs_fe/feature-three/src",
+            "prefix": "scl-co-eval",
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs_fe/feature-three/tsconfig.lib.json",
+                            "libs_fe/feature-three/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs_fe/feature-three/**"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs_fe/feature-three/jest.config.js",
+                        "tsConfig": "libs_fe/feature-three/tsconfig.spec.json",
+                        "passWithNoTests": true,
+                        "setupFile": "libs_fe/feature-three/src/test-setup.ts"
+                    }
+                }
+            },
+            "schematics": {
+                "@nrwl/angular:component": {
+                    "style": "scss"
                 }
             }
         }

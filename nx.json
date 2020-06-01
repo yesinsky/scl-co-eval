@@ -36,6 +36,15 @@
         },
         "util": {
             "tags": []
+        },
+        "feature-one": {
+            "tags": []
+        },
+        "feature-two": {
+            "tags": []
+        },
+        "feature-three": {
+            "tags": []
         }
     }
 }
