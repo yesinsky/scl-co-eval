@@ -12,17 +12,26 @@ const routes: Routes = [
     {
         path: 'one',
         pathMatch: 'full',
-        loadChildren: () => import('@scl-co-eval/feature-one').then(m => m.FeatureOneModule)
+        loadChildren: () => import('@scl-co-eval/feature-one').then(m => m.FeatureOneModule),
+        data: {
+            reuse: true
+        }
     },
     {
         path: 'two',
         pathMatch: 'full',
-        loadChildren: () => import('@scl-co-eval/feature-two').then(m => m.FeatureTwoModule)
+        loadChildren: () => import('@scl-co-eval/feature-two').then(m => m.FeatureTwoModule),
+        data: {
+            reuse: true
+        }
     },
     {
         path: 'three',
         pathMatch: 'full',
-        loadChildren: () => import('@scl-co-eval/feature-three').then(m => m.FeatureThreeModule)
+        loadChildren: () => import('@scl-co-eval/feature-three').then(m => m.FeatureThreeModule),
+        data: {
+            reuse: true
+        }
     },
     {
         path: 'login',
