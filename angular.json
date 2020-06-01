@@ -25,7 +25,10 @@
                             "apps/scl-co-eval/src/favicon.ico",
                             "apps/scl-co-eval/src/assets"
                         ],
-                        "styles": ["apps/scl-co-eval/src/styles.scss"],
+                        "styles": [
+                            "apps/scl-co-eval/src/styles.scss",
+                            "node_modules/normalize.css/normalize.css"
+                        ],
                         "scripts": []
                     },
                     "configurations": {
@@ -206,6 +209,61 @@
                     "options": {
                         "jestConfig": "libs/domain/jest.config.js",
                         "tsConfig": "libs/domain/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "feature-login": {
+            "root": "libs_fe/feature-login",
+            "sourceRoot": "libs_fe/feature-login/src",
+            "projectType": "library",
+            "schematics": {},
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs_fe/feature-login/tsconfig.lib.json",
+                            "libs_fe/feature-login/tsconfig.spec.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**",
+                            "!libs_fe/feature-login/**"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs_fe/feature-login/jest.config.js",
+                        "tsConfig": "libs_fe/feature-login/tsconfig.spec.json",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "util": {
+            "root": "libs_fe/util",
+            "sourceRoot": "libs_fe/util/src",
+            "projectType": "library",
+            "schematics": {},
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "libs_fe/util/tsconfig.lib.json",
+                            "libs_fe/util/tsconfig.spec.json"
+                        ],
+                        "exclude": ["**/node_modules/**", "!libs_fe/util/**"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "options": {
+                        "jestConfig": "libs_fe/util/jest.config.js",
+                        "tsConfig": "libs_fe/util/tsconfig.spec.json",
                         "passWithNoTests": true
                     }
                 }
