@@ -1,7 +1,10 @@
-export interface DeleteUserRequest {
+import { IsEmail } from 'class-validator';
+
+export class DeleteUserRequest {
+    @IsEmail()
     email: string;
 }
-export interface DeleteUserResponse {
+export type DeleteUserResponse = {
     status: DeleteUserStatus;
 }
 export enum DeleteUserStatus {

@@ -1,10 +1,15 @@
 import { UserDto } from '../../user/entities/dto/user.dto';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export type SignUpRequest = AccessRequest & {name: string};
-
-export type AccessRequest = {
+export class AccessRequest {
+    @IsEmail()
     email: string;
+    @IsNotEmpty()
     password: string;
+}
+
+export class SignUpRequest extends AccessRequest{
+    name?: string;
 }
 
 export type AccessResponse = {

@@ -1,6 +1,9 @@
 import { UserDto } from './user.dto';
+import { IsDefined, ValidateNested } from 'class-validator';
 
-export interface UpdateUserRequest {
+export class UpdateUserRequest {
+    @ValidateNested()
+    @IsDefined()
     user: UserDto;
 }
 

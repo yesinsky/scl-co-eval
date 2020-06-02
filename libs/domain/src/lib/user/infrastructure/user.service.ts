@@ -26,6 +26,7 @@ import { UserDataMapper } from '../entities/dto/user.dto';
 import { UserEntity } from '../entities/user.entity';
 import { AuthService } from '../../auth/infrastructure/auth.service';
 import { isString } from '../../shared/utils';
+import * as assert from 'assert';
 
 export interface IUserService {
     create(source: CreateUserRequest): Promise<CreateUserResponse>;
@@ -112,11 +113,8 @@ export class UserService implements IUserService {
         try {
             const { name, email, rawPassword } = source;
 
-            const isValidSource =
-                isEmail(email) && isNotEmpty(name) && isNotEmpty(rawPassword);
-            if (!isValidSource) {
-                return { status: UserCreationStatus.SourceValidationError };
-            }
+            assert(isEmail(email) && isNotEmpty(rawPassword));
+
             const existing = await getRepository(UserEntity).find({
                 where: { email: email },
             });
@@ -128,7 +126,7 @@ export class UserService implements IUserService {
             }
 
             let newUser = new UserEntity();
-            newUser.name = name;
+            newUser.name = !!name ? name : email;
             newUser.email = email;
             newUser.password = await this._authService.encryptPassword(
                 rawPassword

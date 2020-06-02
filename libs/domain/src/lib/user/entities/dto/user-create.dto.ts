@@ -1,12 +1,15 @@
 import { UserDto } from './user.dto';
+import { IsNotEmpty, IsEmail, MinLength } from 'class-validator';
 
-export interface CreateUserRequest {
-    name:string;
+export class CreateUserRequest {
+    name?:string;
+    @IsEmail()
     email: string;
+    @IsNotEmpty()
     rawPassword: string;
 }
 
-export interface CreateUserResponse {
+export type CreateUserResponse = {
     status: UserCreationStatus;
     user?: UserDto;
 }

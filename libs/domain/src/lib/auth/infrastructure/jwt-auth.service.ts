@@ -21,6 +21,7 @@ import {
 import { JwtPayload } from '../entities/jwt-payload';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../../user/infrastructure/user.service';
+import * as assert from 'assert';
 
 //CB 29May2020: Scope.DEFAULT === ex Scope.SINGLETON
 @Injectable({ scope: Scope.DEFAULT })
@@ -42,11 +43,8 @@ export class JwtAuthService extends AuthService {
     async login(loginRequest: AccessRequest): Promise<AccessResponse> {
         try {
             const { email, password } = loginRequest;
-            const isValidSourceData = isEmail(email) && isNotEmpty(password);
 
-            if (!isValidSourceData) {
-                return { status: AccessStatus.InvalidSourceData };
-            }
+            assert(isEmail(email) && isNotEmpty(password));
 
             const user = await this._userService.findByEmail(
                 loginRequest.email
@@ -77,11 +75,7 @@ export class JwtAuthService extends AuthService {
         try {
             const { email, name, password } = signUpRequest;
 
-            const isValidData =
-                isEmail(email) && isNotEmpty(name) && isNotEmpty(password);
-            if (!isValidData) {
-                return { status: AccessStatus.InvalidSourceData };
-            }
+            assert(isEmail(email) && isNotEmpty(password));
 
             const createUser = await this._userService.create({
                 name: name,

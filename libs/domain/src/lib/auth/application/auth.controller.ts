@@ -6,10 +6,12 @@ import {
     Post,
     UseGuards,
     Response,
+    UsePipes,
 } from '@nestjs/common';
 import { AccessRequest, SignUpRequest, AccessStatus } from '../entities/access.dto';
 import { JwtAuthGuard } from '../infrastructure/jwt.guard';
 import { AuthService } from '../infrastructure/auth.service';
+import { ValidationPipe } from '@scl-co-eval/common';
 
 
 @Controller('auth')
@@ -18,6 +20,7 @@ export class AuthController {
         @Inject(AuthService) private readonly _authService: AuthService
     ) {}
 
+    @UsePipes(new ValidationPipe())
     @Post('signup')
     public async register(
         @Body() signUpRequest: SignUpRequest,
@@ -41,6 +44,7 @@ export class AuthController {
     }
 
     @UseGuards(JwtAuthGuard)
+    @UsePipes(new ValidationPipe())
     @Post('login')
     public async login(@Body() loginRequest: AccessRequest, @Response() response) {
         const result = await this._authService.login(loginRequest);
