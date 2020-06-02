@@ -62,33 +62,31 @@ describe('UserService', () => {
     });
 
     it('should fail on Create method call with invalid data', async () => {
-        const invalidEmail = await service.create({
+        const invalidEmail = {
             email: '56v3bey5',
             name: 'testname',
             rawPassword: '12345',
-        });
+        };
 
-        const invalidName = await service.create({
+        //CB 01Jun2020: Name could be omitted (==email) to exactly fit expected api.
+        /*const invalidName = {
             email: 'norma;@test.com',
             name: '',
             rawPassword: '12345',
-        });
+        };*/
 
-        const invalidPwd = await service.create({
+        const invalidPwd = {
             email: 'norma;@test.com',
             name: 'name',
             rawPassword: '',
-        });
+        };
 
-        expect(
-            invalidEmail.status === UserCreationStatus.SourceValidationError
-        ).toBeTruthy();
-        expect(
-            invalidName.status === UserCreationStatus.SourceValidationError
-        ).toBeTruthy();
-        expect(
-            invalidPwd.status === UserCreationStatus.SourceValidationError
-        ).toBeTruthy();
+        expect(async () =>
+            await service.create(invalidEmail)
+        ).rejects.toThrow();
+        expect(async () =>
+            await service.create(invalidPwd)
+        ).rejects.toThrow();
     });
 
     it('should find user by ObjectID', async () => {
