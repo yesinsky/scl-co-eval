@@ -2,7 +2,7 @@
     <header class="header">
         <div class="header__greetings">
             <p>Forest selector</p>
-            <p>version: {{ hello$ | async | json }}</p>
+            <p *ngIf="isMessageAvailable">version: {{ message$ | async | json }}</p>
         </div>
     </header>
     <article class="main">
