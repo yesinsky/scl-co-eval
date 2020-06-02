@@ -9,14 +9,12 @@ import { FeatureOneComponent } from './feature-one/feature-one.component';
 const routes: Routes = [
     {
         path: '',
-        component: FeatureOneComponent
-    }
+        component: FeatureOneComponent,
+    },
 ];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
-export class FeatureOneRoutingModule{
-
-}
+export class FeatureOneRoutingModule {}
