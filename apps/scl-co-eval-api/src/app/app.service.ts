@@ -6,6 +6,6 @@ export class AppService {
     getData(): {
         message: string;
     } {
-        return { message: 'empty workspace' };
+        return { message: 'Server api v1.0' };
     }
 }
