@@ -16,10 +16,10 @@ export class ClientAuthService implements IClientAuthService, OnDestroy {
     //TODO CB30May2020: Extract string values to FE config.
     private readonly _authUrlBase = '/api/auth';
     private readonly _defaultRedirectPath = '/dashboard';
-    private _isAuthenticated: boolean = false;
     private _ngUnsubscribe = new Subject();
 
-    constructor(private _http: HttpClient, private _router: Router) {}
+    constructor(private _http: HttpClient, private _router: Router) {
+    }
 
     ngOnDestroy(): void {
         this._ngUnsubscribe.next();
@@ -70,12 +70,11 @@ export class ClientAuthService implements IClientAuthService, OnDestroy {
 
     private setSession(authResult: ClientAccessData) {
         //TODO CB30May2020: Add exp field to resp. Not yet supported api.
-        const expiresAt = moment().add(6000/*authResult.exp*/, 'second');
+        ///*authResult.exp*/
+        const expiresAt = moment().add(6000, 'second');
 
         localStorage.setItem('id_token', authResult.token);
         localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
-
-        this._isAuthenticated = true;
     }
 
     logout() {
@@ -85,7 +84,7 @@ export class ClientAuthService implements IClientAuthService, OnDestroy {
     }
 
     isLoggedIn() {
-        return moment().isBefore(this.getAuthExpirationTime()) && this._isAuthenticated;
+        return moment().isBefore(this.getAuthExpirationTime());
     }
 
     isLoggedOut() {

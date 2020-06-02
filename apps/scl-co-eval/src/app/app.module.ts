@@ -7,12 +7,17 @@ import { AppComponent } from './app.component';
 import { FeatureLoginModule } from '@scl-co-eval/feature-login';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouteReuseService } from '@scl-co-eval/util';
-import { ClientAuthInterceptor } from '@scl-co-eval/util';
+import { ClientAuthInterceptor, ClientErrorInterceptor } from '@scl-co-eval/util';
 
 const interceptorProviders: Provider[] = [
     {
         provide: HTTP_INTERCEPTORS,
         useClass: ClientAuthInterceptor,
+        multi: true
+    },
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: ClientErrorInterceptor,
         multi: true
     }
 ];
@@ -31,7 +36,7 @@ const interceptorProviders: Provider[] = [
         {
             provide: RouteReuseStrategy,
             useClass: RouteReuseService,
-        },
+        }
     ],
     bootstrap: [AppComponent],
 })
