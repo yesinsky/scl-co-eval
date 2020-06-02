@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 @Injectable({
     providedIn: 'root'
 })
-export class ErrorService implements OnDestroy{
+export class ClientErrorService implements OnDestroy{
     onError: Subject<string> = new Subject<string>();
 
     processError(err){

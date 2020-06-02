@@ -3,7 +3,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Subject, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { ClientAccessData, IClientAuthService } from './interfaces';
+import { ClientAccessData, IClientAuthService } from '../../data/interfaces';
 import { takeUntil } from 'rxjs/operators';
 
 @Injectable({

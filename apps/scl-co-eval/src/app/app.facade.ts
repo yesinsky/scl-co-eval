@@ -1,9 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ClientAuthService } from '@scl-co-eval/util';
+import { ClientAuthService, ClientErrorService } from '@scl-co-eval/util';
 import { Subject, Subscription, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ErrorService } from '../../../../libs_fe/util/src/lib/error.service';
 
 @Injectable({
     providedIn: 'root',
@@ -14,7 +13,7 @@ export class AppFacade implements OnDestroy {
     constructor(
         private _httpClient: HttpClient,
         private _authService: ClientAuthService,
-        private _errorService: ErrorService
+        private _errorService: ClientErrorService
     ) {
         const apiSub = this._authService.onAuthChanged.subscribe((isLogged) => {
             this.isApiAvailable.next(isLogged);
