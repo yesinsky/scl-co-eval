@@ -2,10 +2,18 @@
     <header class="header">
         <div class="header__greetings">
             <p>Forest selector</p>
-            <p *ngIf="isMessageAvailable">version: {{ message$ | async | json }}</p>
+            <p *ngIf="isMessageAvailable">
+                api message: {{ message$ | async | json }}
+            </p>
         </div>
     </header>
     <article class="main">
         <router-outlet class="main__content"></router-outlet>
     </article>
+    <footer class="errors">
+        <div class="errors__frame" *ngIf="error$ | async as message">
+            <p class="errors__status">App error occured:</p>
+            <p class="errors__info" *ngIf="!!message">{{ message }}}</p>
+        </div>
+    </footer>
 </div>

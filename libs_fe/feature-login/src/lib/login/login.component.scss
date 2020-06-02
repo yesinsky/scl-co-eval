@@ -61,6 +61,7 @@ $lightRedColor: hsl(10, 90, 80);
     }
 
     &__validation {
+        height: 1rem;
         color: $lightRedColor;
         text-align: center;
     }

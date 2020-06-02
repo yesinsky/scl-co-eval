@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ClientAuthService } from '@scl-co-eval/util';
 import { Subject, Subscription, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ErrorService } from '../../../../libs_fe/util/src/lib/error.service';
 
 @Injectable({
     providedIn: 'root',
@@ -12,16 +13,19 @@ export class AppFacade implements OnDestroy {
 
     constructor(
         private _httpClient: HttpClient,
-        private _authService: ClientAuthService
+        private _authService: ClientAuthService,
+        private _errorService: ErrorService
     ) {
-        this._authSub = this._authService.onAuthChanged.subscribe((isLogged) => {
+        const apiSub = this._authService.onAuthChanged.subscribe((isLogged) => {
             this.isApiAvailable.next(isLogged);
         });
+
+        this.subs = [apiSub];
     }
 
-    private _authSub: Subscription;
+    private readonly subs: Subscription[];
 
-    getTestApiMessage() {
+    getTestApiMessages() {
         return this._httpClient.get<any>('/api/hello').pipe(
             catchError((err) => {
                 console.log(err);
@@ -30,8 +34,18 @@ export class AppFacade implements OnDestroy {
         );
     }
 
+    getApplicationErrors() {
+        //TODO CB01Jun2020: Yagni - passed by as is for simplicity.
+        return this._errorService.onError;
+    }
+
     ngOnDestroy(): void {
-        this._authSub.unsubscribe();
-        this._authSub = null;
+        for (let i = 0; i < this.subs.length; i++) {
+            let sub = this.subs[i];
+            if (!!sub) {
+                sub.unsubscribe();
+                sub[i] = null;
+            }
+        }
     }
 }

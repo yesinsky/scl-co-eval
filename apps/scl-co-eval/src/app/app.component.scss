@@ -1,6 +1,9 @@
 @import '~normalize.css';
 
-.container{
+$blackColor:  #000000;
+$errorRedColor: hsl(10, 90, 70);
+
+.container {
     display: block;
 }
 
@@ -11,7 +14,7 @@
     margin: 1em;
     &__greetings {
         text-align: center;
-        color: #000000;
+        color: $blackColor;
     }
 }
 
@@ -21,9 +24,21 @@
     align-items: center;
     justify-content: center;
 
-    &__content {
-        height: 30vh;
-        margin: auto;
-        width: 100%;
+    height: 50vh;
+    margin: auto;
+    width: 100%;
+}
+
+.errors {
+    &__frame{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-wrap: break-word;
+    }
+    &__info {
+        text-align: center;
+        color: $errorRedColor;
+        width: 30%;
     }
 }

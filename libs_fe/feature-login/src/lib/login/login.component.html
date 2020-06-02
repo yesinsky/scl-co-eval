@@ -33,9 +33,9 @@
         </div>
 
         <div class="login__validation">
-            <p *ngIf="this.loginForm.dirty && this.loginForm.invalid">
+            <span *ngIf="this.loginForm.dirty && this.loginForm.invalid">
                 {{ 'Invalid login data' }}
-            </p>
+            </span>
         </div>
     </form>
 </section>
