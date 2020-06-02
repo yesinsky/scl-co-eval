@@ -8,6 +8,7 @@
         </div>
     </header>
     <article class="main">
+        <div class="main__logo" *ngIf="!isMessageAvailable"></div>
         <router-outlet class="main__content"></router-outlet>
     </article>
     <footer class="errors">

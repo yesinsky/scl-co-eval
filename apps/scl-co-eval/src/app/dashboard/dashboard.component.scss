@@ -1,13 +1,28 @@
+@import "../app.component";
+
 .dashboard {
+    &__selector {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
 
-  &__selector{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+    &__link {
+        margin: 1rem;
+    }
+}
 
-  &__link{
-    margin: 1rem;
-  }
+.pinetreeed {
+    @extend .defaultImage;
+    background-image: url('apps/scl-co-eval/src/assets/pine300.png');
+}
 
+.cappercaillied {
+    @extend .defaultImage;
+    background-image: url('apps/scl-co-eval/src/assets/capper300.png');
+}
+
+.mushroomed {
+    @extend .defaultImage;
+    background-image: url('apps/scl-co-eval/src/assets/mush300.png');
 }
